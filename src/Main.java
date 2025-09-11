@@ -47,8 +47,8 @@ public class Main {
         ejecutarAlgoritmo();
     }
 
-    /**
-     * Ejecuta el algoritmo de colonia de hormigas con los parámetros actuales
+    /*
+     Ejecuta el algoritmo de colonia de hormigas con los parámetros actuales
      */
     public static void ejecutarAlgoritmo() {
         CreadorCiudades creador = CreadorCiudades.getInstancia(); // cargar ciudades
@@ -90,8 +90,8 @@ public class Main {
         long tiempoTotal = System.currentTimeMillis() - tiempoInicio;
         mostrarResultados(tiempoTotal);
     }
-    /**
-     * Inicializa la matriz de feromonas con valores uniformes
+    /*
+     Inicializa la matriz de feromonas con valores uniformes
      */
     public static void inicializarFeromonas() {
         feromonas = new double[numCiudades][numCiudades];
@@ -108,8 +108,8 @@ public class Main {
         }
     }
 
-    /**
-     * Crea la colonia de hormigas
+    /*
+     Crea la colonia de hormigas
      */
     public static void crearHormigas() {
         hormigas = new ArrayList<>();
@@ -118,8 +118,8 @@ public class Main {
         }
     }
 
-    /**
-     * Actualiza la mejor solución encontrada hasta el momento
+    /*
+     Actualiza la mejor solución encontrada hasta el momento
      */
     public static void actualizarMejorSolucion() {
         for (Hormiga hormiga : hormigas) {
@@ -131,17 +131,16 @@ public class Main {
         historialMejores.add(mejorDistancia);
     }
 
-    /**
-     * Aplica evaporación a todas las feromonas
-     * Nueva_feromona = (1 - ρ) × Feromona_actual
+    /*
+     Aplica evaporación a todas las feromonas
+     Nueva_feromona = (1 - ρ) × Feromona_actual
      */
     public static void evaporarFeromonas() {
         for (int i = 0; i < numCiudades; i++) {
             for (int j = 0; j < numCiudades; j++) {
                 if (i != j) {
                     feromonas[i][j] = (1.0 - rho) * feromonas[i][j];
-
-                    // Evitar que la feromona se vuelva demasiado pequeña
+                    // si la feromona es muy baja, se evita que llegue a 0 para mantener exploración
                     if (feromonas[i][j] < 0.001) {
                         feromonas[i][j] = 0.001;
                     }
@@ -150,8 +149,10 @@ public class Main {
         }
     }
 
-    /**
-     * Las hormigas depositan feromona en las aristas que usaron
+    /*
+     Las hormigas depositan feromona en las aristas que usaron en su tour
+     se depositan en la proporción Q / distancia_total
+
      */
     public static void depositarFeromonas() {
         for (Hormiga hormiga : hormigas) {
@@ -161,60 +162,50 @@ public class Main {
             // Depositar feromona en cada arista del tour
             for (int i = 0; i < tour.size(); i++) {
                 int ciudadA = tour.get(i);
-                int ciudadB = tour.get((i + 1) % tour.size()); // Vuelta al origen
-
+                int ciudadB = tour.get((i + 1) % tour.size()); // vuelta al inicio del tour
+                //se deposita las feromonas en ambas direcciones ya que es un grafo no dirigido
                 feromonas[ciudadA][ciudadB] += feromonaADepositar;
-                feromonas[ciudadB][ciudadA] += feromonaADepositar; // Grafo no dirigido
+                feromonas[ciudadB][ciudadA] += feromonaADepositar;
             }
         }
     }
 
 
-    /**
-     * Muestra los resultados finales del algoritmo
+    /*
+     Muestra los resultados finales del algoritmo
      */
     public static void mostrarResultados(long tiempoTotal) {
-        System.out.println("\n" + "=".repeat(60));
+        System.out.println("\n" + "----------------------------------------------------------------------------------------");
         System.out.println("RESULTADOS DEL ALGORITMO DE COLONIA DE HORMIGAS");
-        System.out.println("=".repeat(60));
+        System.out.println("--------------------------------------------------------------------------------------------------------");
         System.out.printf("Mejor distancia encontrada: %.2f\n", mejorDistancia);
         System.out.printf("Tiempo de ejecución: %.3f segundos\n", tiempoTotal / 1000.0);
-        System.out.printf("Iteraciones promedio: %.1f por segundo\n",
-                (maxIteraciones * 1000.0) / tiempoTotal);
 
         if (mejorTour != null) {
             System.out.println("\nMejor tour encontrado:");
             mostrarTour(mejorTour);
         }
 
-        System.out.println("=".repeat(60));
+        System.out.println("----------------------------------------------------------------------------------------");
     }
 
-    /**
-     * Muestra el tour de forma compacta
+    /*
+    muestra el tour de la mejor solucion encontrada
      */
     public static void mostrarTour(List<Integer> tour) {
         System.out.print("Ciudades: ");
-
-        // Mostrar solo los primeros 15 y últimos 5 para evitar spam
-        int mostrarInicio = Math.min(15, tour.size());
+        int mostrarInicio = Math.min(15, tour.size()); //muestra solamente las primeras 15 ciudades
         for (int i = 0; i < mostrarInicio; i++) {
             System.out.print((tour.get(i) + 1) + " -> ");
         }
 
-        if (tour.size() > 15) {
+        if (tour.size() > 15) { //luego muestra las ultimas 5 ciudades
             System.out.print("... -> ");
             int empezarFinal = Math.max(15, tour.size() - 5);
             for (int i = empezarFinal; i < tour.size(); i++) {
                 System.out.print((tour.get(i) + 1) + " -> ");
             }
         }
-
         System.out.println((tour.get(0) + 1)); // Vuelta al origen
     }
-
-    /**
-     * Función para probar diferentes configuraciones de parámetros
-     */
-
 }

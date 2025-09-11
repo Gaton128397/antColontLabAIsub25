@@ -24,8 +24,8 @@ public class Hormiga {
         this(numCiudades, 1.0, 2.0); // Valores por defecto
     }
 
-    /**
-     * Construye un tour completo visitando todas las ciudades
+    /*
+     Construye un tour completo visitando todas las ciudades
      */
     public void construirTour(double[][] feromonas, double[][] distancias) {
         reset();
@@ -63,8 +63,8 @@ public class Hormiga {
         return seleccionRuleta(ciudadesDisponibles, probabilidades);
     }
 
-    /**
-     * Calcula las probabilidades de transición para las ciudades disponibles
+    /*
+     Calcula las probabilidades de transición para las ciudades disponibles
      */
     private double[] calcularProbabilidades(List<Integer> ciudadesDisponibles, double[][] feromonas, double[][] distancias) {
         double[] probabilidades = new double[ciudadesDisponibles.size()];
@@ -115,8 +115,8 @@ public class Hormiga {
         return ciudadesDisponibles.get(ciudadesDisponibles.size() - 1);
     }
 
-    /**
-     * Obtiene las ciudades que aún no han sido visitadas
+    /*
+     Obtiene las ciudades que aún no han sido visitadas
      */
     private List<Integer> getCiudadesDisponibles() {
         List<Integer> disponibles = new ArrayList<>();
@@ -128,16 +128,16 @@ public class Hormiga {
         return disponibles;
     }
 
-    /**
-     * Marca una ciudad como visitada y la añade al tour
+    /*
+     Marca una ciudad como visitada y la añade al tour
      */
     private void visitarCiudad(int ciudad) {
         visitadas[ciudad] = true;
         tour.add(ciudad);
     }
 
-    /**
-     * Calcula la distancia total del tour (incluyendo vuelta al origen)
+    /*
+     Calcula la distancia total del tour (incluyendo vuelta al origen)
      */
     private void calcularDistanciaTotal(double[][] distancias) {
         distanciaTotal = 0.0;
@@ -167,15 +167,6 @@ public class Hormiga {
         ciudadActual = -1;
     }
 
-    /**
-     * Calcula la cantidad de feromona que deposita esta hormiga en cada arista
-     */
-    public double calcularFeromonaADepositar() {
-        if (distanciaTotal == 0) return 0.0;
-        return 100.0 / distanciaTotal; // Q / L(k) donde Q=100 es una constante
-    }
-
-    // Getters
     public List<Integer> getTour() {
         return new ArrayList<>(tour); // Copia defensiva
     }
@@ -184,21 +175,11 @@ public class Hormiga {
         return distanciaTotal;
     }
 
-    public boolean haCompletadoTour() {
-        return tour.size() == visitadas.length;
-    }
-
     @Override
     public String toString() {
         return String.format("Hormiga[Tour: %d ciudades, Distancia: %.2f]",
                 tour.size(), distanciaTotal);
     }
 
-    /**
-     * Método para debug: muestra el tour completo
-     */
-    public void mostrarTour() {
-        System.out.println("Tour: " + tour);
-        System.out.println("Distancia total: " + distanciaTotal);
-    }
+
 }
