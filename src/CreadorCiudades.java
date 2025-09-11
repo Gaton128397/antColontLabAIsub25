@@ -1,8 +1,8 @@
 import java.util.List;
 public class CreadorCiudades {
-    private static CreadorCiudades instancia = null;
-    private List<Ciudad> ciudades;
-    private double[][] distanciasEntreCiudades;
+    static CreadorCiudades instancia = null;
+    List<Ciudad> ciudades;
+    double[][] distanciasEntreCiudades;
 
     private CreadorCiudades(){
         construirCiudades();
