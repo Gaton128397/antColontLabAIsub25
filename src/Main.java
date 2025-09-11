@@ -71,7 +71,11 @@ public class Main {
         long tiempoInicio = System.currentTimeMillis();
 
         // Bucle principal del algoritmo
+        int progresoIntervalo = maxIteraciones / 10; // Mostrar progreso cada 10%
         for (int iteracion = 0; iteracion < maxIteraciones; iteracion++) {
+            if (progresoIntervalo > 0 && (iteracion + 1) % progresoIntervalo == 0) {
+                System.out.printf("Progreso: %d%% completado.\n", ((iteracion + 1) * 100) / maxIteraciones);
+            }
             //cada hormiga hace su tour en base a las feromonas y distancias (clase Hormiga.java para mas detalles)
             for (Hormiga hormiga : hormigas) {
                 hormiga.construirTour(feromonas, distancias);
@@ -80,6 +84,8 @@ public class Main {
             evaporarFeromonas();
             depositarFeromonas();
             if ((iteracion + 1) % 50 == 0) { // mostrar cada 50 iteraciones el progreso de la ejecución
+
+
                 System.out.printf("Iteración %d: Mejor distancia = %.2f\n",
                         iteracion + 1, mejorDistancia);
             }
