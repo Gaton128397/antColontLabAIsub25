@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 public class ManejoDatos {
     private static final String archivoSerializado = "ciudades.ser";
-    private static final String datoOriginal = "a280.txt";
+    private static final String datoOriginal = "src/a280.txt";
     //serializar la lista de ciudades
     public static List<Ciudad> cargarDatos() {
         List<Ciudad> ciudades = deserializarDatos(); // Intentar cargar datos serializados
