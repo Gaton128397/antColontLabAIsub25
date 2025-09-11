@@ -8,6 +8,27 @@ La distancia del nodo i al nodo j es la misma que la del nodo j al nodo i. Â¿CuÃ
 */
 public class Main {
     public static void main(String[] args) {
+        CreadorCiudades creador = CreadorCiudades.getInstancia();
+        double[][] distancias = creador.getDistanciasEntreCiudades();
+        int numCiudades = creador.getNumeroCiudades();
 
+        // Crear matriz de feromonas inicial
+        double[][] feromonas = new double[numCiudades][numCiudades];
+        double feromonaInicial = 1.0;
+        for (int i = 0; i < numCiudades; i++) {
+            for (int j = 0; j < numCiudades; j++) {
+                if (i != j) {
+                    feromonas[i][j] = feromonaInicial;
+                }
+            }
+        }
+
+        // Crear y probar una hormiga
+        Hormiga hormiga = new Hormiga(numCiudades, 1.0, 2.0);
+        hormiga.construirTour(feromonas, distancias);
+
+        System.out.println("Tour construido:");
+        hormiga.mostrarTour();
+        System.out.println("Feromona a depositar: " + hormiga.calcularFeromonaADepositar());
     }
 }
