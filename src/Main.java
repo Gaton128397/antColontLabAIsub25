@@ -44,11 +44,7 @@ public class Main {
         Q = 100.0;              // Constante para deposición de feromona
         numHormigas = 30;       // Número de hormigas
         maxIteraciones = 300;   // Número máximo de iteraciones
-
         ejecutarAlgoritmo();
-
-        // Opción 2: Probar diferentes configuraciones
-        // probarDiferentesParametros();
     }
 
     /**
@@ -88,10 +84,6 @@ public class Main {
 
                 System.out.printf("Iteración %d: Mejor distancia = %.2f\n",
                         iteracion + 1, mejorDistancia);
-            }
-            if (detectarConvergencia()) {
-                System.out.println("Convergencia detectada en iteración " + (iteracion + 1));
-                break;
             }
         }
 
@@ -177,24 +169,6 @@ public class Main {
         }
     }
 
-    /**
-     * Detecta si el algoritmo ha convergido
-     */
-    public static boolean detectarConvergencia() {
-        if (historialMejores.size() < 100) return false;
-
-        // Verificar si no ha mejorado en las últimas 100 iteraciones
-        int ultimas = Math.min(100, historialMejores.size());
-        double ultimaMejor = historialMejores.get(historialMejores.size() - 1);
-
-        for (int i = historialMejores.size() - ultimas; i < historialMejores.size(); i++) {
-            if (Math.abs(historialMejores.get(i) - ultimaMejor) > 0.01) {
-                return false; // Aún hay mejoras
-            }
-        }
-
-        return true; // Convergencia detectada
-    }
 
     /**
      * Muestra los resultados finales del algoritmo
@@ -242,65 +216,5 @@ public class Main {
     /**
      * Función para probar diferentes configuraciones de parámetros
      */
-    public static void probarDiferentesParametros() {
-        System.out.println("Probando diferentes configuraciones de parámetros...\n");
 
-        // Guardar parámetros originales
-        double alphaOriginal = alpha;
-        double betaOriginal = beta;
-        double rhoOriginal = rho;
-        int hormigasOriginal = numHormigas;
-        int iteracionesOriginal = maxIteraciones;
-
-        // Configuraciones a probar
-        Object[][] configuraciones = {
-                {"Estándar", 30, 1.0, 2.0, 0.5, 300},
-                {"Pocas hormigas", 15, 1.0, 2.0, 0.5, 300},
-                {"Muchas hormigas", 50, 1.0, 2.0, 0.5, 300},
-                {"Baja evaporación", 30, 1.0, 2.0, 0.3, 300},
-                {"Alta evaporación", 30, 1.0, 2.0, 0.7, 300},
-                {"Más feromona", 30, 2.0, 1.5, 0.5, 300},
-                {"Más heurística", 30, 0.5, 3.0, 0.5, 300}
-        };
-
-        List<Double> resultados = new ArrayList<>();
-        List<String> nombres = new ArrayList<>();
-
-        for (Object[] config : configuraciones) {
-            String nombre = (String) config[0];
-            numHormigas = (Integer) config[1];
-            alpha = (Double) config[2];
-            beta = (Double) config[3];
-            rho = (Double) config[4];
-            maxIteraciones = (Integer) config[5];
-
-            System.out.println("=== Configuración: " + nombre + " ===");
-            ejecutarAlgoritmo();
-
-            resultados.add(mejorDistancia);
-            nombres.add(nombre);
-            System.out.println();
-        }
-
-        // Mostrar comparación final
-        System.out.println("=".repeat(60));
-        System.out.println("COMPARACIÓN DE CONFIGURACIONES");
-        System.out.println("=".repeat(60));
-        for (int i = 0; i < nombres.size(); i++) {
-            System.out.printf("%-20s: %.2f\n", nombres.get(i), resultados.get(i));
-        }
-
-        // Encontrar la mejor configuración
-        double mejorResultado = Collections.min(resultados);
-        int indiceMejor = resultados.indexOf(mejorResultado);
-        System.out.println("\nMejor configuración: " + nombres.get(indiceMejor) +
-                " (distancia: " + mejorResultado + ")");
-
-        // Restaurar parámetros originales
-        alpha = alphaOriginal;
-        beta = betaOriginal;
-        rho = rhoOriginal;
-        numHormigas = hormigasOriginal;
-        maxIteraciones = iteracionesOriginal;
-    }
 }
